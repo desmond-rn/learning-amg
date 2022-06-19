@@ -144,10 +144,10 @@ def csrs_to_graphs_tuple(csrs, matlab_engine, node_feature_size=128, coarse_node
 
 def P_square_sparsity_pattern(P, size, coarse_nodes, matlab_engine):
     P_coo = P.tocoo()
-    P_rows = matlab.double((P_coo.row + 1))
-    P_cols = matlab.double((P_coo.col + 1))
+    P_rows = matlab.double((P_coo.row + 1).astype(np.float64))
+    P_cols = matlab.double((P_coo.col + 1).astype(np.float64))
     P_values = matlab.double(P_coo.data)
-    coarse_nodes = matlab.double((coarse_nodes + 1))
+    coarse_nodes = matlab.double((coarse_nodes + 1).astype(np.float64))
     rows, cols = matlab_engine.square_P(P_rows, P_cols, P_values, size, coarse_nodes,  nargout=2)
     rows = np.array(rows._data).reshape(rows.size, order='F') - 1
     cols = np.array(cols._data).reshape(cols.size, order='F') - 1

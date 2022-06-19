@@ -5,7 +5,7 @@ import numpy as np
 import pyamg
 import scipy.linalg
 import tensorflow as tf
-from pyamg.classical import direct_interpolation
+from pyamg.classical.interpolate import direct_interpolation
 from scipy.sparse import csr_matrix
 
 from utils import chunks, most_frequent_splitting

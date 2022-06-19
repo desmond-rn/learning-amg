@@ -19,9 +19,17 @@ https://arxiv.org/abs/2003.05744
 
 ## Training
 ### Graph Laplacian
+
+For the very first run, use the following. It will use default config and create the data for you
 ```
 python train.py
 ```
+
+To avoid recreating the data everytime you run the script, do this !
+```
+python train.py -config GRAPH_LAPLACIAN_TRAIN -eval-config GRAPH_LAPLACIAN_EVAL
+```
+
 Model checkpoint is saved at 'training_dir/*model_id*', where *model_id* is a randomly generated 5 digit string.
 
 Tensorboard log files are outputted to 'tb_dir/*model_id*'.
