@@ -133,7 +133,7 @@ def test_model(model_name=None, test_config='GRAPH_LAPLACIAN_TEST', seed=1):
 
     # fix random seeds for reproducibility
     np.random.seed(seed)
-    tf.random.set_seed(seed)
+    tf.random.set_random_seed(seed)
     matlab_engine.eval(f'rng({seed})')
 
     test_config = getattr(configs, test_config).test_config
@@ -151,9 +151,8 @@ def test_model(model_name=None, test_config='GRAPH_LAPLACIAN_TEST', seed=1):
 
 
 if __name__ == '__main__':
-    config = tf.compat.v1.ConfigProto()
+    config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
-    # tf.enable_eager_execution(config=config)   ## Not needed for tensorflow 2
-    tf.compat.v1.enable_eager_execution(config=config)
+    tf.enable_eager_execution(config=config)
 
     fire.Fire(test_model)

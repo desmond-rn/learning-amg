@@ -8,8 +8,6 @@ import matlab.engine
 import numpy as np
 import pyamg
 import tensorflow as tf
-# import tensorflow.compat.v1 as tf
-# tf.disable_v2_behavior() 
 from pyamg.classical.interpolate import direct_interpolation
 from scipy.sparse import csr_matrix
 from tqdm import tqdm
@@ -335,7 +333,7 @@ def train(config='GRAPH_LAPLACIAN_TRAIN_CREATE_DATA', eval_config='GRAPH_LAPLACI
 
     # fix random seeds for reproducibility
     np.random.seed(seed)
-    tf.random.set_seed(seed)
+    tf.random.set_random_seed(seed)
     matlab_engine.eval(f'rng({seed})')
 
     batch_size = min(config.train_config.samples_per_run, config.train_config.batch_size)
@@ -353,8 +351,8 @@ def train(config='GRAPH_LAPLACIAN_TRAIN_CREATE_DATA', eval_config='GRAPH_LAPLACI
         raise NotImplementedError()
     else:
         model = create_model(config.model_config)
-        global_step = tf.compat.v1.train.get_or_create_global_step()
-        optimizer = tf.compat.v1.train.AdamOptimizer(learning_rate=config.train_config.learning_rate)
+        global_step = tf.train.get_or_create_global_step()
+        optimizer = tf.train.AdamOptimizer(learning_rate=config.train_config.learning_rate)
 
     run_name = ''.join(random.choices(string.digits, k=5))  # to make the run_name string unique
     create_results_dir(run_name)
@@ -362,7 +360,7 @@ def train(config='GRAPH_LAPLACIAN_TRAIN_CREATE_DATA', eval_config='GRAPH_LAPLACI
 
     checkpoint_prefix = os.path.join(config.train_config.checkpoint_dir + '/' + run_name, 'ckpt')
     log_dir = config.train_config.tensorboard_dir + '/' + run_name
-    writer = tf.summary.create_file_writer(log_dir)
+    writer = tf.contrib.summary.create_file_writer(log_dir)
     writer.set_as_default()
 
     for run in range(config.train_config.num_runs):
@@ -409,8 +407,8 @@ def train(config='GRAPH_LAPLACIAN_TRAIN_CREATE_DATA', eval_config='GRAPH_LAPLACI
 
 
 if __name__ == '__main__':
-    tf_config = tf.compat.v1.ConfigProto()
+    tf_config = tf.ConfigProto()
     tf_config.gpu_options.allow_growth = True
-    tf.compat.v1.enable_eager_execution(config=tf_config)
+    tf.enable_eager_execution(config=tf_config)
 
     fire.Fire(train)
