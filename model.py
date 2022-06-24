@@ -23,7 +23,7 @@ def get_model(model_name, model_config, run_config, matlab_engine, train=False, 
 
 def load_model(checkpoint_dir, dummy_input, model_config, run_config, matlab_engine, get_optimizer=True,
                train_config=None):
-    tf.enable_eager_execution()
+    tf.compat.v1.enable_eager_execution()
     model = create_model(model_config)
 
     # we have to use the model at least once to get the list of variables

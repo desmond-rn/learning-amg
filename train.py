@@ -101,8 +101,8 @@ def loss(dataset, A_graphs_tuple, P_graphs_tuple,
 
     if train_config.fourier:
         As = [tf.cast(tf.sparse.to_dense(A), tf.complex128) for A in As]
-        block_As = [block_diagonalize_A_single(A, data_config.root_num_blocks, tensor=True) for A in As]
-        block_Ss = relaxation_matrices([csr_matrix(A.numpy()) for block_A in block_As for A in block_A])
+        block_As = [block_diagonalize_A_single(A, data_config.root_num_blocks, tensor=False) for A in As]
+        block_Ss = relaxation_matrices([csr_matrix(A) for block_A in block_As for A in block_A])
 
     batch_size = len(dataset.coarse_nodes_list)
     total_norm = tf.Variable(0.0, dtype=tf.float64)
